@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>10秒麻雀 HARD — 清一色・混一色</title>
+<style>
+:root{--bg:#070b16;--panel:#10182b;--panel2:#151f36;--ink:#f7f4e9;--muted:#8ea0bd;--gold:#ffc857;--cyan:#42e8e0;--red:#ff4d6d;--green:#62e69a;--edge:#263654;--shadow:0 18px 60px #0008}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;color:var(--ink);background:radial-gradient(circle at 50% -20%,#243860 0,#0d1425 34%,var(--bg) 72%);font-family:Inter,"Noto Sans JP","Yu Gothic UI",sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.26;background-image:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
+button{font:inherit}.app{width:min(1040px,100%);margin:auto;padding:24px}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.brand{display:flex;gap:12px;align-items:center}.logo{width:46px;height:46px;border-radius:13px;background:linear-gradient(145deg,var(--gold),#ff8a3d);color:#17100a;font-size:28px;font-weight:1000;display:grid;place-items:center;box-shadow:0 6px 22px #ffb24b55}.brand h1{font-size:20px;line-height:1.1;margin:0;letter-spacing:.03em}.brand small{color:var(--muted);font-weight:700}.sound{border:1px solid var(--edge);background:#10182bcc;color:var(--muted);border-radius:10px;padding:9px 12px;cursor:pointer}.screen{display:none}.screen.active{display:block;animation:rise .35s ease-out}@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:42px 18px 26px}.eyebrow{color:var(--cyan);font-weight:900;letter-spacing:.16em;font-size:12px}.hero h2{font-size:clamp(42px,8vw,78px);line-height:.96;margin:14px 0 18px;letter-spacing:-.055em}.hero h2 em{font-style:normal;color:var(--gold);text-shadow:0 0 28px #ffc85744}.hero p{max-width:680px;margin:auto;color:#b9c5d9;line-height:1.8}.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:24px 0}.mode-card{position:relative;text-align:left;border:1px solid var(--edge);border-radius:20px;background:linear-gradient(150deg,#18243d,#0d1424);padding:23px;color:var(--ink);cursor:pointer;min-height:182px;transition:.2s;overflow:hidden}.mode-card:hover,.mode-card:focus-visible{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 16px 36px #0007,0 0 0 3px #42e8e01a;outline:0}.mode-card:after{content:attr(data-char);position:absolute;right:-5px;bottom:-28px;font-family:serif;font-size:112px;font-weight:900;color:#ffffff0a}.mode-card b{font-size:26px;display:block;margin:10px 0 7px}.mode-card p{font-size:13px;line-height:1.65;color:var(--muted);margin:0}.tag{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900;letter-spacing:.12em;background:#42e8e018;color:var(--cyan);border:1px solid #42e8e033}.mode-card.gold .tag{color:var(--gold);background:#ffc85713;border-color:#ffc85738}.mode-card.red .tag{color:#ff8ba0;background:#ff4d6d14;border-color:#ff4d6d35}.rules{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;color:var(--muted);font-size:12px}.rules b{color:var(--ink)}
+.hud{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin-bottom:14px}.hudbox{border:1px solid var(--edge);background:#0d1528d9;border-radius:14px;padding:11px 14px}.hudbox.right{text-align:right}.hudlabel{font-size:10px;color:var(--muted);font-weight:900;letter-spacing:.14em}.hudvalue{font-size:24px;font-weight:1000;font-variant-numeric:tabular-nums}.hudvalue.gold{color:var(--gold)}.round{text-align:center;font-size:12px;color:var(--muted);font-weight:900;letter-spacing:.1em}.round strong{display:block;color:var(--ink);font-size:22px;letter-spacing:0}.game-card{border:1px solid var(--edge);border-radius:24px;background:linear-gradient(145deg,#111b31f2,#0b1222f4);box-shadow:var(--shadow);overflow:hidden}.timer-shell{height:11px;background:#070b14;position:relative}.timer-bar{height:100%;width:100%;background:linear-gradient(90deg,var(--red),var(--gold),var(--cyan));transform-origin:left center;box-shadow:0 0 18px #42e8e077}.time-readout{position:absolute;right:10px;top:17px;font-size:18px;font-weight:1000;font-variant-numeric:tabular-nums;color:var(--cyan)}.question{padding:34px 28px 29px}.mode-line{text-align:center;color:var(--muted);font-size:11px;letter-spacing:.16em;font-weight:900}.prompt{text-align:center;margin:8px 0 22px;font-size:clamp(20px,3vw,29px);font-weight:1000}.prompt span{color:var(--gold)}.hand-wrap{display:flex;justify-content:center;align-items:flex-end;gap:11px;min-height:108px;padding:11px 5px 18px;border-bottom:1px solid #ffffff0b}.hand{display:flex;justify-content:center;align-items:flex-end;gap:4px;flex-wrap:nowrap}.tile{position:relative;width:52px;height:72px;border:0;border-radius:7px;background:linear-gradient(145deg,#fffef7,#e7e6dd);color:#182033;box-shadow:inset 0 -5px 0 #c4c6be,0 6px 0 #8e9b9b,0 9px 14px #0007;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:1000;line-height:1;user-select:none}.tile .n{font-family:Georgia,serif;font-size:27px}.tile .s{font-family:"Yu Mincho",serif;font-size:22px;margin-top:3px}.tile.m .n,.tile.m .s{color:#be273e}.tile.p .n{color:#185cc2}.tile.p .s{color:#185cc2;font-size:17px}.tile.s .n,.tile.s .s{color:#177451}.tile.z .s{font-size:31px;margin:0}.tile.z.z5 .s{color:#d7d5ce;text-shadow:0 0 0 #777,1px 0 #777,-1px 0 #777,0 1px #777,0 -1px #777}.tile.z.z6 .s{color:#168653}.tile.z.z7 .s{color:#d52f40}.plus{font-size:24px;color:var(--muted);padding-bottom:19px}.answers{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:22px}.answer{min-height:112px;border:1px solid var(--edge);background:#131e35;border-radius:15px;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:.16s;position:relative}.answer:hover:not(:disabled),.answer:focus-visible:not(:disabled){background:#1a2b47;border-color:var(--cyan);transform:translateY(-3px);outline:0}.answer .key{position:absolute;left:9px;top:8px;color:#7890b1;font-size:10px;border:1px solid #31435f;padding:2px 5px;border-radius:5px}.answer .tile{transform:scale(.74);margin:-10px}.answer.correct{border-color:var(--green);background:#143125;box-shadow:0 0 26px #62e69a2e}.answer.wrong{border-color:var(--red);background:#341724;animation:shake .28s}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.feedback{display:none;padding:24px 28px 27px;border-top:1px solid var(--edge);background:#0b1324}.feedback.show{display:grid;grid-template-columns:1.25fr 1fr auto;gap:20px;align-items:center;animation:rise .22s}.verdict{font-size:30px;font-weight:1000}.verdict.ok{color:var(--green)}.verdict.ng{color:#ff7089}.detail{color:var(--muted);font-size:13px;line-height:1.65}.detail b{color:var(--ink)}.waits{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.mini{display:inline-flex;align-items:center;justify-content:center;min-width:29px;height:38px;padding:2px;border-radius:4px;background:#f5f3e9;color:#182033;box-shadow:0 3px 0 #869494;font-weight:900}.mini.m{color:#be273e}.mini.p{color:#185cc2}.mini.s{color:#177451}.mini.z6{color:#168653}.mini.z7{color:#d52f40}.gain{text-align:right}.gain small{color:var(--muted);font-weight:800}.gain strong{display:block;font-size:31px;color:var(--gold);font-variant-numeric:tabular-nums}.next{border:0;border-radius:12px;background:var(--cyan);color:#07131b;font-weight:1000;padding:13px 18px;cursor:pointer;margin-top:7px}.next:hover{filter:brightness(1.1)}.fever{position:fixed;inset:auto 0 9%;text-align:center;pointer-events:none;font-size:clamp(50px,11vw,110px);font-weight:1000;font-style:italic;letter-spacing:.04em;color:#fff0;z-index:5;-webkit-text-stroke:2px #ffc85788;text-shadow:0 0 40px #ff7a4d88;transform:rotate(-5deg);animation:fever .7s ease-out forwards}@keyframes fever{0%{transform:scale(2) rotate(-5deg);opacity:0}35%{opacity:1}100%{transform:scale(1) rotate(-5deg);opacity:0}}
+.result-card{max-width:710px;margin:38px auto;border:1px solid var(--edge);border-radius:24px;background:linear-gradient(145deg,#18243c,#0d1527);box-shadow:var(--shadow);text-align:center;padding:42px 30px}.result-card h2{font-size:45px;margin:5px 0}.rank{width:100px;height:100px;border-radius:50%;display:grid;place-items:center;margin:18px auto;border:5px solid var(--gold);color:var(--gold);font-size:50px;font-weight:1000;box-shadow:0 0 40px #ffc85733}.final-score{font-size:56px;font-weight:1000;color:var(--gold);font-variant-numeric:tabular-nums}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:23px 0}.summary div{border:1px solid var(--edge);border-radius:12px;padding:13px;background:#0b1324}.summary small{display:block;color:var(--muted);font-size:10px;font-weight:900}.summary strong{font-size:24px}.actions{display:flex;justify-content:center;gap:10px}.primary,.secondary{border-radius:12px;padding:14px 21px;font-weight:1000;cursor:pointer}.primary{border:0;background:var(--gold);color:#231707}.secondary{border:1px solid var(--edge);background:#10192b;color:var(--ink)}.footer{text-align:center;color:#60728e;font-size:10px;margin-top:16px}
+@media(max-width:760px){.app{padding:14px}.mode-grid{grid-template-columns:1fr}.mode-card{min-height:130px}.hud{grid-template-columns:1fr auto 1fr}.hudbox{padding:8px}.hudvalue{font-size:18px}.question{padding:30px 11px 18px}.hand-wrap{overflow-x:auto;justify-content:flex-start;padding-left:6px}.hand{gap:2px}.tile{width:40px;height:57px;min-width:40px}.tile .n{font-size:21px}.tile .s{font-size:17px}.answers{gap:7px}.answer{min-height:90px}.feedback.show{grid-template-columns:1fr auto}.feedback .detail{grid-column:1/-1;grid-row:2}.summary{grid-template-columns:1fr}.hero{padding-top:22px}.brand h1{font-size:16px}.result-card{margin:18px auto}.final-score{font-size:42px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo">十</div><div><h1>10秒麻雀 <span style="color:var(--red)">HARD</span></h1><small>CHINITSU / HONITSU TRAINING</small></div></div>
+    <button class="sound" id="soundBtn" aria-label="サウンド切替">SOUND ON</button>
+  </header>
+
+  <main id="menu" class="screen active">
+    <section class="hero">
+      <div class="eyebrow">見えるか、その多面張。</div>
+      <h2>一色手を、<br><em>10秒で読む。</em></h2>
+      <p>13枚の手牌を瞬時に読み、選択肢の中から和了牌を選べ。<br>正確さ・速度・連続正解が、スコアを跳ね上げる。</p>
+    </section>
+    <section class="mode-grid">
+      <button class="mode-card" data-mode="chinitsu" data-char="清"><span class="tag">HARD</span><b>清一色</b><p>数牌1種類のみ。形が重なり合う、一色手特有の多面張を鍛える。</p></button>
+      <button class="mode-card gold" data-mode="honitsu" data-char="混"><span class="tag">HARD+</span><b>混一色</b><p>数牌1種類＋字牌。字牌の刻子・雀頭を見抜き、残りの形を読む。</p></button>
+      <button class="mode-card red" data-mode="mix" data-char="極"><span class="tag">ENDLESS MIX</span><b>一色地獄</b><p>清一色と混一色が交互に来る。最高スコアを狙う総合モード。</p></button>
+    </section>
+    <div class="rules"><span><b>10</b> 問勝負</span><span>各問 <b>10.00</b> 秒</span><span><b>1–4</b> キー対応</span><span>毎回自動生成</span></div>
+  </main>
+
+  <main id="game" class="screen">
+    <div class="hud">
+      <div class="hudbox"><div class="hudlabel">SCORE</div><div class="hudvalue gold" id="score">0</div></div>
+      <div class="round">ROUND<strong><span id="roundNow">1</span> / 10</strong></div>
+      <div class="hudbox right"><div class="hudlabel">COMBO</div><div class="hudvalue"><span id="combo">0</span><small style="font-size:11px;color:var(--muted)"> COMBO</small></div></div>
+    </div>
+    <section class="game-card">
+      <div class="timer-shell"><div class="timer-bar" id="timerBar"></div><div class="time-readout" id="time">10.00</div></div>
+      <div class="question">
+        <div class="mode-line" id="modeLine">清一色 CHINITSU</div>
+        <div class="prompt">選択肢の中で、<span>和了できる牌</span>はどれ？</div>
+        <div class="hand-wrap"><div class="hand" id="hand"></div><div class="plus">＋ ?</div></div>
+        <div class="answers" id="answers"></div>
+      </div>
+      <div class="feedback" id="feedback">
+        <div><div class="verdict" id="verdict">正解</div><div class="detail" id="feedbackText"></div></div>
+        <div class="gain"><small id="bonusText">SPEED × 1.00</small><strong id="gain">+0</strong></div>
+        <div><button class="next" id="nextBtn">NEXT →</button></div>
+      </div>
+    </section>
+    <div class="footer">※ プロトタイプ：門前の標準形（4面子1雀頭）と七対子を判定。フリテン・残り枚数は考慮しません。</div>
+  </main>
+
+  <main id="result" class="screen">
+    <section class="result-card">
+      <div class="eyebrow">TRAINING COMPLETE</div><h2>結果</h2><div class="rank" id="rank">A</div>
+      <div class="final-score" id="finalScore">0</div><div style="color:var(--muted);font-size:11px;font-weight:900;letter-spacing:.14em">TOTAL SCORE</div>
+      <div class="summary"><div><small>CORRECT</small><strong id="correctSum">0 / 10</strong></div><div><small>MAX COMBO</small><strong id="maxCombo">0</strong></div><div><small>BEST</small><strong id="bestScore">0</strong></div></div>
+      <p id="rankMessage" style="color:#b8c5d9"></p>
+      <div class="actions"><button class="primary" id="retryBtn">もう一局</button><button class="secondary" id="menuBtn">モード選択</button></div>
+    </section>
+  </main>
+</div>
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const state={mode:'chinitsu',round:0,score:0,combo:0,maxCombo:0,correct:0,q:null,active:false,start:0,raf:0,sound:true};
+const honor=['','東','南','西','北','白','發','中'];
+const suitName={m:'萬',p:'筒',s:'索'};
+const modeName={chinitsu:'清一色 CHINITSU',honitsu:'混一色 HONITSU'};
+function id(s,r){return s+r} function parse(t){return {s:t[0],r:+t.slice(1)}}
+function countTiles(a){const c={};for(const t of a)c[t]=(c[t]||0)+1;return c}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function canMeld(c){const keys=Object.keys(c).filter(k=>c[k]>0).sort((a,b)=>tileOrder(a)-tileOrder(b));if(!keys.length)return true;const t=keys[0],{s,r}=parse(t);if(c[t]>=3){c[t]-=3;if(canMeld(c)){c[t]+=3;return true}c[t]+=3}if(s!=='z'&&r<=7&&c[id(s,r+1)]>0&&c[id(s,r+2)]>0){c[t]--;c[id(s,r+1)]--;c[id(s,r+2)]--;if(canMeld(c)){c[t]++;c[id(s,r+1)]++;c[id(s,r+2)]++;return true}c[t]++;c[id(s,r+1)]++;c[id(s,r+2)]++}return false}
+function isAgari(a){if(a.length!==14)return false;const c=countTiles(a),vals=Object.values(c);if(vals.length===7&&vals.every(n=>n===2))return true;for(const k of Object.keys(c)){if(c[k]>=2){c[k]-=2;if(canMeld(c)){c[k]+=2;return true}c[k]+=2}}return false}
+function tileOrder(t){const o={m:0,p:20,s:40,z:60},x=parse(t);return o[x.s]+x.r}
+function allowed(mode,s){const a=[];for(let r=1;r<=9;r++)a.push(id(s,r));if(mode==='honitsu')for(let r=1;r<=7;r++)a.push(id('z',r));return a}
+function waits(hand,mode,s){const c=countTiles(hand);return allowed(mode,s).filter(t=>(c[t]||0)<4&&isAgari([...hand,t]))}
+function makeComplete(mode){for(let tries=0;tries<500;tries++){
+ const s=['m','p','s'][Math.floor(Math.random()*3)],a=[],melds=[];
+ let honors=mode==='honitsu'?(1+Math.floor(Math.random()*2)):0;
+ const hz=shuffle([1,2,3,4,5,6,7]).slice(0,honors);
+ for(const z of hz)melds.push(['z'+z,'z'+z,'z'+z]);
+ while(melds.length<4){if(Math.random()<.66){const r=1+Math.floor(Math.random()*7);melds.push([id(s,r),id(s,r+1),id(s,r+2)])}else{const r=1+Math.floor(Math.random()*9);melds.push([id(s,r),id(s,r),id(s,r)])}}
+ a.push(...melds.flat());
+ let pair;if(mode==='honitsu'&&Math.random()<.35){const r=1+Math.floor(Math.random()*7);pair='z'+r}else pair=id(s,1+Math.floor(Math.random()*9));
+ a.push(pair,pair);const c=countTiles(a);if(Object.values(c).some(n=>n>4))continue;return {tiles:a,suit:s}}
+ throw Error('generation failed')}
+function makeQuestion(mode){for(let tries=0;tries<300;tries++){
+ const use=mode==='mix'?(state.round%2===0?'chinitsu':'honitsu'):mode;
+ const full=makeComplete(use),hand=[...full.tiles];hand.splice(Math.floor(Math.random()*hand.length),1);hand.sort((a,b)=>tileOrder(a)-tileOrder(b));
+ const ws=waits(hand,use,full.suit),non=allowed(use,full.suit).filter(t=>!ws.includes(t)&&(countTiles(hand)[t]||0)<4);
+ if(ws.length&&non.length>=3&&ws.length<=8){const correct=ws[Math.floor(Math.random()*ws.length)];return {mode:use,suit:full.suit,hand,waits:ws,correct,choices:shuffle([correct,...shuffle(non).slice(0,3)])}}
+ }return makeQuestion(mode)}
+function tileHTML(t,mini=false){const {s,r}=parse(t);if(mini){const label=s==='z'?honor[r]:r+suitName[s];return `<span class="mini ${s} ${s==='z'?'z'+r:''}">${label}</span>`}if(s==='z')return `<div class="tile z z${r}" aria-label="${honor[r]}"><span class="s">${honor[r]}</span></div>`;return `<div class="tile ${s}" aria-label="${r}${suitName[s]}"><span class="n">${r}</span><span class="s">${suitName[s]}</span></div>`}
+function showScreen(which){$$('.screen').forEach(x=>x.classList.remove('active'));$('#'+which).classList.add('active')}
+function start(mode){state.mode=mode;state.round=0;state.score=0;state.combo=0;state.maxCombo=0;state.correct=0;$('#score').textContent='0';$('#combo').textContent='0';showScreen('game');nextQuestion()}
+function nextQuestion(){if(state.round>=10)return endGame();state.q=makeQuestion(state.mode);state.round++;state.active=true;$('#roundNow').textContent=state.round;$('#modeLine').textContent=modeName[state.q.mode]+' ／ '+state.q.suit.toUpperCase()+' SUIT';$('#hand').innerHTML=state.q.hand.map(t=>tileHTML(t)).join('');$('#feedback').classList.remove('show');const ans=$('#answers');ans.innerHTML=state.q.choices.map((t,i)=>`<button class="answer" data-tile="${t}" aria-label="選択肢${i+1}"><span class="key">${i+1}</span>${tileHTML(t)}</button>`).join('');$$('.answer').forEach(b=>b.onclick=()=>answer(b.dataset.tile,b));state.start=performance.now();cancelAnimationFrame(state.raf);tick()}
+function tick(){if(!state.active)return;const left=Math.max(0,10000-(performance.now()-state.start));$('#time').textContent=(left/1000).toFixed(2);$('#timerBar').style.transform=`scaleX(${left/10000})`;if(left<=0)return answer(null,null,true);state.raf=requestAnimationFrame(tick)}
+function answer(t,btn,timeout=false){if(!state.active)return;state.active=false;cancelAnimationFrame(state.raf);const elapsed=Math.min(10000,performance.now()-state.start),ok=t===state.q.correct;$$('.answer').forEach(b=>{b.disabled=true;if(b.dataset.tile===state.q.correct)b.classList.add('correct')});if(btn&&!ok)btn.classList.add('wrong');let gain=0,speed=1;
+ if(ok){state.correct++;state.combo++;state.maxCombo=Math.max(state.maxCombo,state.combo);speed=1+Math.max(0,(10000-elapsed)/10000)*.8;const comboMul=1+Math.min(state.combo-1,9)*.12;gain=Math.round(1000*speed*comboMul);state.score+=gain;beep(true);if(state.combo===5){const f=document.createElement('div');f.className='fever';f.textContent='FEVER × COMBO';document.body.appendChild(f);setTimeout(()=>f.remove(),800)}}else{state.combo=0;beep(false)}
+ $('#combo').textContent=state.combo;animateNumber($('#score'),+(($('#score').textContent||'0').replace(/,/g,'')),state.score);$('#verdict').textContent=ok?'正解！':timeout?'TIME UP':'惜しい！';$('#verdict').className='verdict '+(ok?'ok':'ng');const type=state.q.waits.length>=3?'多面張':state.q.waits.length===2?'両面・双碰候補':'単一待ち';$('#feedbackText').innerHTML=`<b>${type}：待ちは全 ${state.q.waits.length} 種</b><div class="waits">${state.q.waits.map(x=>tileHTML(x,true)).join('')}</div>`;$('#bonusText').textContent=ok?`SPEED × ${speed.toFixed(2)} ／ COMBO ${state.combo}`:'COMBO RESET';$('#gain').textContent=ok?'+'+gain.toLocaleString():'+0';$('#feedback').classList.add('show');$('#nextBtn').focus()}
+function animateNumber(el,from,to){const st=performance.now(),dur=420;function go(n){const p=Math.min(1,(n-st)/dur),e=1-Math.pow(1-p,3);el.textContent=Math.round(from+(to-from)*e).toLocaleString();if(p<1)requestAnimationFrame(go)}requestAnimationFrame(go)}
+function endGame(){showScreen('result');const score=state.score,rate=state.correct;let rank='C',msg='一色手のブロックを、面子と雀頭に切り分けてみよう。';if(rate===10&&score>=18000){rank='S';msg='一色手が完全に見えています。まさに GOD HAND。'}else if(rate>=9){rank='A';msg='かなり速い。一色手の多面張にも対応できています。'}else if(rate>=7){rank='B';msg='あと一歩。速度より先に、全ての待ちを拾う意識を。'}$('#rank').textContent=rank;$('#finalScore').textContent=score.toLocaleString();$('#correctSum').textContent=state.correct+' / 10';$('#maxCombo').textContent=state.maxCombo;let best=0;try{best=+(localStorage.getItem('10secMahjongBest')||0);if(score>best){best=score;localStorage.setItem('10secMahjongBest',best)}}catch(e){}$('#bestScore').textContent=best.toLocaleString();$('#rankMessage').textContent=msg}
+let audio=null;function beep(ok){if(!state.sound)return;try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.type=ok?'sine':'sawtooth';o.frequency.setValueAtTime(ok?620:170,audio.currentTime);if(ok)o.frequency.exponentialRampToValueAtTime(980,audio.currentTime+.12);g.gain.setValueAtTime(.08,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.18);o.start();o.stop(audio.currentTime+.19)}catch(e){}}
+$$('.mode-card').forEach(b=>b.onclick=()=>start(b.dataset.mode));$('#nextBtn').onclick=nextQuestion;$('#retryBtn').onclick=()=>start(state.mode);$('#menuBtn').onclick=()=>showScreen('menu');$('#soundBtn').onclick=()=>{state.sound=!state.sound;$('#soundBtn').textContent=state.sound?'SOUND ON':'SOUND OFF'};
+addEventListener('keydown',e=>{if($('#game').classList.contains('active')){if(state.active&&['1','2','3','4'].includes(e.key)){const b=$$('.answer')[+e.key-1];if(b)b.click()}else if(!state.active&&(e.key==='Enter'||e.key===' ')){e.preventDefault();nextQuestion()}}});
+})();
+</script>
+</body>
+</html>
